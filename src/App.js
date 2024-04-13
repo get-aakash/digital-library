@@ -8,6 +8,8 @@ import BookLanding from './pages/Landing/BookLanding';
 import BookList from './pages/books/BookList';
 import NewBook from './pages/books/NewBook';
 import BorrowHistory from './pages/borrow-history/BorrowHistory';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
         <Route path='admin/new' element = {<NewBook />} />
         <Route path='borrow-history' element = {<BorrowHistory />} />
       </Routes>
+      <ToastContainer />
      
     </div>
   );
