@@ -4,24 +4,44 @@ import { Button, Container, Form } from 'react-bootstrap'
 import CustomInput from '../../components/custom-input/CustomInput'
 import { type } from '@testing-library/user-event/dist/type'
 import { toast } from 'react-toastify'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { auth, db } from '../../firebase-config/firebaseConfig'
+import { doc, setDoc } from 'firebase/firestore'
+import { useNavigate } from 'react-router-dom'
 
 
 const SignUp = () => {
   const [form, setForm] = useState({})
-
+const navigate = useNavigate()
   const handleOnChange = (e)=>{
     const {name,value} = e.target
     setForm({...form, [name]: value})
   }
 
-  const handleOnSubmit = (e)=>{
+  const handleOnSubmit = async(e)=>{
     e.preventDefault()
-    const {cPassword, password, email} = form
+    try {
+    
+    const {cPassword, password, email, name} = form
     if(cPassword !== password){
      return toast.error("Password doesnot match")
     }
-    console.log(cPassword, password
-    )
+    
+    const {user} = await createUserWithEmailAndPassword(auth, email, password)
+      updateProfile(user,{
+        displayName: name
+      })
+      const obj = {
+        email,name
+      }
+      await setDoc(doc(db,'users',user.uid),obj)
+      toast.success("Your account has been created redirecting to dashboard!!")
+      navigate("/dashboard")
+      
+    } catch (error) {
+      toast.error(error.message)
+      
+    }
   }
   const inputs = [{
     label: "Name",
