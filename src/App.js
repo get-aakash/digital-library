@@ -10,8 +10,20 @@ import NewBook from './pages/books/NewBook';
 import BorrowHistory from './pages/borrow-history/BorrowHistory';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import PrivateRoute from './components/private-route/PrivateRoute';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
+import { setUser } from './pages/signup-signin/userSlice';
+import { auth } from './firebase-config/firebaseConfig';
 
 function App() {
+  const dispatch = useDispatch()
+  onAuthStateChanged(auth, (user)=>{
+  const obj = {
+    uid: user?.uid,
+    email:user?.email,
+    dispalayName:user?.displayName}
+    dispatch(setUser(obj))})
   return (
     <div className="App">
       <Routes>
@@ -23,7 +35,14 @@ function App() {
 
         {/* {private routes} */}
 
-        <Route path='dashboard' element = {<Dashboard />} />
+        <Route 
+        path='dashboard' 
+        element = {
+        <PrivateRoute>
+          <Dashboard />
+        </PrivateRoute>
+      } 
+      />
         <Route path='admin/books' element = {<BookList />} />
         <Route path='admin/new' element = {<NewBook />} />
         <Route path='borrow-history' element = {<BorrowHistory />} />

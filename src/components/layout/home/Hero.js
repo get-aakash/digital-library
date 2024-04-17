@@ -7,8 +7,9 @@ function DarkVariantExample() {
     <Carousel data-bs-theme="dark" >
       <Carousel.Item interval={1000}>
         <img
-          className="d-block w-100 h-25"
+          className="d-block w-100 "
           src={image1}
+          style={{ height: "500px" }} 
           alt="First slide"
         />
         <Carousel.Caption>
@@ -20,8 +21,9 @@ function DarkVariantExample() {
       </Carousel.Item>
       <Carousel.Item interval={1000}>
         <img
-          className="d-block w-100 h-25"
+          className="d-block w-100 "
           src={image2}
+          style={{ height: "500px" }} 
           alt="Second slide"
         />
         <Carousel.Caption >
@@ -31,8 +33,9 @@ function DarkVariantExample() {
       </Carousel.Item>
       <Carousel.Item interval={1000}>
         <img
-          className="d-block w-100 h-25"
+          className="d-block w-100 "
           src={image3}
+          style={{ height: "500px" }} 
           alt="Third slide"
         />
         <Carousel.Caption>

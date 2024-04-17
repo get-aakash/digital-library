@@ -8,39 +8,54 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { auth, db } from '../../firebase-config/firebaseConfig'
 import { doc, setDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { setUser } from './userSlice'
 
 
 const SignUp = () => {
+  const dispatch = useDispatch()
   const [form, setForm] = useState({})
-const navigate = useNavigate()
-  const handleOnChange = (e)=>{
-    const {name,value} = e.target
-    setForm({...form, [name]: value})
+  const navigate = useNavigate()
+  const handleOnChange = (e) => {
+    const { name, value } = e.target
+    setForm({ ...form, [name]: value })
   }
 
-  const handleOnSubmit = async(e)=>{
+  const handleOnSubmit = async (e) => {
     e.preventDefault()
     try {
-    
-    const {cPassword, password, email, name} = form
-    if(cPassword !== password){
-     return toast.error("Password doesnot match")
-    }
-    
-    const {user} = await createUserWithEmailAndPassword(auth, email, password)
-      updateProfile(user,{
-        displayName: name
-      })
-      const obj = {
-        email,name
+
+      const { cPassword, password, email, name } = form
+      if (cPassword !== password) {
+        return toast.error("Password doesnot match")
       }
-      await setDoc(doc(db,'users',user.uid),obj)
+
+      const userPending = createUserWithEmailAndPassword(auth, email, password)
+
+      toast.promise(userPending, {
+        pending: "Please Wait!!",
+        success: "User Created",
+        error: "User Creation failed"
+      })
+      const { user } = await userPending
+      console.log(user)
+      if (user?.uid) {
+        updateProfile(user, {
+          displayName: name
+        })
+      }
+
+      const obj = {
+        email, name,role:form.role
+      }
+      await setDoc(doc(db, 'users', user.uid), obj)
+      dispatch(setUser({ ...obj, uid: user.uid, role: form.role }))
       toast.success("Your account has been created redirecting to dashboard!!")
       navigate("/dashboard")
-      
+
     } catch (error) {
       toast.error(error.message)
-      
+
     }
   }
   const inputs = [{
@@ -77,21 +92,30 @@ const navigate = useNavigate()
   return (
     <DefaultLayout>
       <Container className='mt-5'>
-        <Form onSubmit={handleOnSubmit} className='border rounded shadow-lg p-5 m-auto py-5' style = {{width: "450px"}}>
+        <Form onSubmit={handleOnSubmit} className='border rounded shadow-lg p-5 m-auto py-5' style={{ width: "450px" }}>
           <h3 className='text-primary fw-bolder'>Join Our Library</h3>
-        
-        <Form.Text className='mt-5 py-2'>
-          Create admin or user account
-        </Form.Text>
-        <div className="mt-5">
-          {inputs.map((item,i)=>(
-            <CustomInput key={i} {...item} onChange={handleOnChange} />
-          ))}
-          
-        </div>
-        <div className='d-grid mt-3'>
-          <Button type='submit'>Join Library</Button>
-        </div>
+
+          <Form.Text className='mt-5 py-2'>
+            Create admin or user account
+          </Form.Text>
+          <div className="mt-5">
+            <Form.Group className='mb-3'>
+              <label className="mb-2">Account Type</label>
+              <Form.Select name="role" onChange={handleOnChange}>
+                <option value="" >Select User type</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+              </Form.Select>
+            </Form.Group>
+            {inputs.map((item, i) => (
+              <CustomInput key={i} {...item} onChange={handleOnChange} />
+            ))}
+
+          </div>
+
+          <div className='d-grid mt-3'>
+            <Button type='submit'>Join Library</Button>
+          </div>
         </Form>
       </Container>
     </DefaultLayout>
