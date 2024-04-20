@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Col, Row } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { deleteBookAction } from '../../pages/books/bookAction'
+import Ratings from '../ratings/Ratings'
 
 const CustomRow = ({books}) => {
     const dispatch = useDispatch()
@@ -20,14 +21,7 @@ const CustomRow = ({books}) => {
     <Col><h4>{books?.title}</h4>
         <p>{books?.summary}</p>
         <div className="d-flex justify-content-between">
-            <div className="ratings text-warning">
-            <i className="fa-solid fa-star"></i>
-            <i className="fa-solid fa-star"></i>
-            <i className="fa-solid fa-star"></i>
-            <i className="fa-solid fa-star"></i>
-            <i className="fa-solid fa-star"></i>
-
-            </div>
+            <Ratings ratings= {books?.ratings} />
             <Button variant="danger" onClick={()=>handleOnDelete(books.id)}>Delete</Button></div></Col>
     
   </Row>

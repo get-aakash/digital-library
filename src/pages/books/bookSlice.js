@@ -16,10 +16,14 @@ const bookSlice = createSlice({
             
         },
         requestSuccess:(state, {payload})=>{
+            
             state.isLoading = false
             state.response = payload
         },
         getBooksSuccess:(state, {payload})=>{
+            if(state.books.length && !payload.length){
+                return
+            }
             state.isLoading = false
             state.books = payload
         }

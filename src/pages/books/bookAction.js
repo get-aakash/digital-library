@@ -7,17 +7,17 @@ import { toast } from "react-toastify"
 export const getBooksAction = () => async (dispatch) => {
     try {
         dispatch(requestPending())
-        let bks=[]
+        let bks = []
         const q = query(collection(db, "books"))
         const querySnapshot = await getDocs(q)
         querySnapshot.forEach((doc) => {
-            const {id} = doc
-            const data = {...doc.data(),id}
+            const { id } = doc
+            const data = { ...doc.data(), id }
             bks.push(data)
         })
-        if(bks.length){
-            dispatch(getBooksSuccess(bks))
-        }
+
+        dispatch(getBooksSuccess(bks))
+
 
     } catch (error) {
         return {
@@ -31,7 +31,7 @@ export const addBookAction = (formData) => async (dispatch) => {
         dispatch(requestPending())
         const docRef = await addDoc(collection(db, 'books'), formData)
         if (docRef.id) {
-            dispatch(requestSuccess())&& dispatch(getBooksAction()) && toast.success("Book added successfully!!!!")
+            dispatch(requestSuccess()) && dispatch(getBooksAction()) && toast.success("Book added successfully!!!!")
             return
         }
         toast.error("unable to add book")
@@ -43,17 +43,17 @@ export const addBookAction = (formData) => async (dispatch) => {
     }
 }
 
-export const deleteBookAction = (id)=>async(dispatch)=>{
+export const deleteBookAction = (id) => async (dispatch) => {
     try {
         dispatch(requestPending())
-        await deleteDoc(doc(db,'books',id))
-        dispatch(requestSuccess()&& dispatch(getBooksAction()) && toast.success("Book deleted succssfully"))
-        
+        await deleteDoc(doc(db, 'books', id))
+        dispatch(requestSuccess() && dispatch(getBooksAction()) && toast.success("Book deleted succssfully"))
+
     } catch (error) {
         return {
             status: "error",
             message: error.message
         }
-        
+
     }
 }

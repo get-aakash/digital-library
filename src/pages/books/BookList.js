@@ -10,6 +10,7 @@ const BookList = () => {
   const dispatch = useDispatch()
   const {user} = useSelector(state=>state.user)
   const {books} = useSelector(state=>state.book)
+  console.log(books)
   useEffect(()=>{
     dispatch(getBooksAction())
 
