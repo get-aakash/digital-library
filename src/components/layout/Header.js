@@ -10,11 +10,11 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
 const Header = () => {
-  const {user} = useSelector(state=>state.user)
-  const handleOnLogout = ()=>{
-    signOut(auth).then(()=>{
+  const { user } = useSelector(state => state.user)
+  const handleOnLogout = () => {
+    signOut(auth).then(() => {
       toast.success("Signout successfully")
-    }).catch(error=>toast.error(error.message))
+    }).catch(error => toast.error(error.message))
   }
   return (
     <Navbar expand="md border" bg='none' >
@@ -23,14 +23,26 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto gap-4 fs-4">
-          <Link to="/" title='Home'><i class="fa-solid fa-house"></i></Link>
-{user?.uid ? <Link to='#' onClick={handleOnLogout} title='SignOut'><i class="fa-solid fa-person-walking-arrow-right"></i></Link>:(<>
-  <Link to="/signup" title='SignUp'><i className="fa-solid fa-user-pen"></i></Link>
-            <Link to="/signin" title='SignIn'><i className="fa-solid fa-right-to-bracket"></i></Link>
-</>)}
+            {user?.uid &&  <div className="nav-link">Welcome {user.name}</div>}
+         
+            <Link to="/" title='Home'><i class="fa-solid fa-house"></i></Link>
+            {user?.uid ? 
+            <>
+            {user?.role === "admin" && (<Link to='/admin/books' ><i class="fa-solid fa-book"></i></Link> )}
             
             
+            <Link to='#' onClick={handleOnLogout} title='SignOut'><i class="fa-solid fa-person-walking-arrow-right"></i></Link> 
             
+            </>
+            : (
+            <>
+              <Link to="/signup" title='SignUp'><i className="fa-solid fa-user-pen"></i></Link>
+              <Link to="/signin" title='SignIn'><i className="fa-solid fa-right-to-bracket"></i></Link>
+            </>
+          )}
+
+
+
           </Nav>
         </Navbar.Collapse>
       </Container>

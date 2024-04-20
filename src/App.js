@@ -22,7 +22,8 @@ function App() {
   const obj = {
     uid: user?.uid,
     email:user?.email,
-    dispalayName:user?.displayName}
+    dispalayName:user?.displayName,
+  }
     dispatch(setUser(obj))})
   return (
     <div className="App">
@@ -43,8 +44,10 @@ function App() {
         </PrivateRoute>
       } 
       />
-        <Route path='admin/books' element = {<BookList />} />
-        <Route path='admin/new' element = {<NewBook />} />
+        <Route path='admin/books' element = {
+        <PrivateRoute><BookList /></PrivateRoute>} />
+        <Route path='admin/new' element = {<PrivateRoute><NewBook />
+          </PrivateRoute>} />
         <Route path='borrow-history' element = {<BorrowHistory />} />
       </Routes>
       <ToastContainer />

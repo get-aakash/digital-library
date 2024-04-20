@@ -14,11 +14,10 @@ const SignIn = () => {
   const dispatch = useDispatch()
   const [form, setForm] = useState({})
   const navigate = useNavigate()
-  const {user} = useSelector(state=>state.user)
-
-  useEffect(()=>{
- user?.uid && navigate("/dashboard")
-  },[ user?.uid,navigate])
+  const { user } = useSelector(state => state.user)
+  useEffect(() => {
+    user?.uid && navigate("/dashboard")
+  }, [user?.uid, navigate])
   const handleOnChange = (e) => {
     const { name, value } = e.target
     setForm({ ...form, [name]: value })
@@ -27,64 +26,59 @@ const SignIn = () => {
     e.preventDefault()
     try {
 
-      const {  password, email } = form
-     
+      const { password, email } = form
+
 
       const userPending = signInWithEmailAndPassword(auth, email, password)
 
       toast.promise(userPending, {
         pending: "Please Wait!!",
-      
+
       })
       const { user } = await userPending
 
-      const {uid, displayName} = user
-      const userObj = {
-        uid,displayName,email
+      const { uid } = user
+
+      const userRef = doc(db, 'users', uid)
+      const docSnap = await getDoc(userRef)
+      console.log(docSnap)
+      if (docSnap.exists()) {
+        const dbUser = docSnap.data()
+        console.log("docSnap:", docSnap.data())
+        const userObj = {
+          uid, ...dbUser
+        }
+        console.log(userObj)
+
+        if (userObj.uid) {
+          dispatch(setUser(userObj))
+          toast.success("Your account has been created redirecting to dashboard!!")
+          return
+        }
       }
-
-      // if (user?.uid) {
-      //   //getUSer
-      //   const q = query(collection(db, 'users'), where ("uid","==", user.uid))
-      //   const querySnapshot = await getDoc(q)
-      //   querySnapshot.forEach((doc)=>{
-      //     const data= {...doc.data()}
-      //     console.log(data)
-      //     dispatch(setUser(data))
-      //   })
-        
-     // }
-
-    
-      user?.uid ?
-        
-        toast.success("Your account has been created redirecting to dashboard!!")&&
-        dispatch(setUser(userObj))
-        : toast.error("unable to login")
-  
-
+      toast.error("unable to login, Invalid details")
     } catch (error) {
       toast.error(error.message)
 
     }
   }
   const inputs = [
-  {
-    label: "Email",
-    name: 'email',
-    placeholder: "sam@sam.com",
-    type: "email",
-    required: true
+    {
+      label: "Email",
+      name: 'email',
+      placeholder: "sam@sam.com",
+      type: "email",
+      required: true
 
-  },
-  {
-    label: "Password",
-    name: 'password',
-    placeholder: "******",
-    type: "password",
-    required: true
+    },
+    {
+      label: "Password",
+      name: 'password',
+      placeholder: "******",
+      type: "password",
+      required: true
 
-  },
+    },
   ]
   return (
     <DefaultLayout>
@@ -92,9 +86,9 @@ const SignIn = () => {
         <Form onSubmit={handleOnSubmit} className='border rounded shadow-lg p-5 m-auto py-5' style={{ width: "450px" }}>
           <h3 className='text-primary fw-bolder'>Welcome to Our Library</h3>
 
-      
+
           <div className="mt-5">
-            
+
             {inputs.map((item, i) => (
               <CustomInput key={i} {...item} onChange={handleOnChange} />
             ))}

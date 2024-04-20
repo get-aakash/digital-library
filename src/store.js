@@ -1,6 +1,6 @@
 import {  configureStore } from "@reduxjs/toolkit";
 import userReducer  from "./pages/signup-signin/userSlice";
-const store = configureStore({
+export default configureStore({
     reducer:{
        user: userReducer,
 
@@ -8,4 +8,3 @@ const store = configureStore({
 
 })
 
-export default store
