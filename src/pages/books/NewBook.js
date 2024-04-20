@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import AdminLayout from '../../components/layout/AdminLayout'
-import { Button, Container, Form, Placeholder } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
+import { Button, Container, Form, Placeholder, Spinner } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
 import CustomInput from '../../components/custom-input/CustomInput'
+import { addBookAction } from './bookAction'
 
 const initialState = {
   thumbnail:"",
@@ -12,6 +13,8 @@ const initialState = {
 const NewBook = () => {
   const [form, setForm] = useState(initialState)
   const {user} = useSelector(state=>state.user)
+  const {isLoading} = useSelector(state=>state.book)
+  const dispatch = useDispatch()
   if(user.role !== "admin"){
     console.log(user.role)
     return <h1>Unauthorised Login</h1>
@@ -22,7 +25,7 @@ const NewBook = () => {
   }
   const handleOnSubmit = (e)=>{
     e.preventDefault()
-    console.log(form)
+    dispatch(addBookAction(form))
   }
 
   const inputs = [
@@ -70,7 +73,11 @@ const NewBook = () => {
           inputs.map((item,i)=><CustomInput key={i} {...item} onChange={handleOnChange}/>)
         }
         <div className="py-3 d-grid">
-          <Button type='submit' variant="primary">Submit New Book</Button></div>
+          <Button type='submit' variant="primary">
+            {isLoading ?(
+              <Spinner animation='grow' variant="light" />
+            ):("Submit New Book")}
+            </Button></div>
           </Form>
       </Container>
     </AdminLayout>
