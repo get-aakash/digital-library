@@ -4,6 +4,7 @@ import { Button, Container, Form, Placeholder, Spinner } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import CustomInput from '../../components/custom-input/CustomInput'
 import { addBookAction } from './bookAction'
+import { Link, useNavigate } from 'react-router-dom'
 
 const initialState = {
   thumbnail:"",
@@ -12,6 +13,7 @@ const initialState = {
 }
 const NewBook = () => {
   const [form, setForm] = useState(initialState)
+  const navigate = useNavigate()
   const {user} = useSelector(state=>state.user)
   const {isLoading} = useSelector(state=>state.book)
   const dispatch = useDispatch()
@@ -26,6 +28,7 @@ const NewBook = () => {
   const handleOnSubmit = (e)=>{
     e.preventDefault()
     dispatch(addBookAction(form))
+    navigate('/admin/books')
   }
 
   const inputs = [
@@ -66,7 +69,10 @@ const NewBook = () => {
   return (
     <AdminLayout>
       <Container>
+        
         <Form onSubmit={handleOnSubmit} className='w-75 m-auto border rounded p-2 mt-5'>
+          <Link to="/admin/books"> <Button variant='secondary'>&lt;Back</Button></Link>
+       
         <h4 className='mt-4'>Add New Book</h4>
         <hr />
         {

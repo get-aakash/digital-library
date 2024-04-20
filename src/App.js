@@ -15,16 +15,19 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { setUser } from './pages/signup-signin/userSlice';
 import { auth } from './firebase-config/firebaseConfig';
+import { autoLogin } from './pages/signup-signin/userAction';
 
 function App() {
   const dispatch = useDispatch()
   onAuthStateChanged(auth, (user)=>{
-  const obj = {
-    uid: user?.uid,
-    email:user?.email,
-    dispalayName:user?.displayName,
-  }
-    dispatch(setUser(obj))})
+  // const obj = {
+  //   uid: user?.uid,
+  //   email:user?.email,
+  //   dispalayName:user?.displayName,
+  // }
+    //dispatch(setUser(obj))
+    dispatch(autoLogin(user.uid))
+  })
   return (
     <div className="App">
       <Routes>

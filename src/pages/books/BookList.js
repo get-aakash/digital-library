@@ -1,12 +1,19 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import AdminLayout from '../../components/layout/AdminLayout'
 import { Button, Container, Form } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import BookTable from '../../components/book-table/BookTable'
+import { getBooksAction } from './bookAction'
 
 const BookList = () => {
+  const dispatch = useDispatch()
   const {user} = useSelector(state=>state.user)
+  const {books} = useSelector(state=>state.book)
+  useEffect(()=>{
+    dispatch(getBooksAction())
+
+  },[dispatch])
   if(user.role !== "admin"){
     console.log(user.role)
     return <h1>Unauthorised Login</h1>
@@ -24,7 +31,7 @@ const BookList = () => {
         <Link to="/admin/new">  <Button variant='primary'>+Add New Book</Button></Link>
         </div>
         <hr />
-        <BookTable />
+        <BookTable books={books} />
         </Container>
     </AdminLayout>
   )
