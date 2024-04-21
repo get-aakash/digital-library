@@ -3,35 +3,31 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
     books:[],
-    response:{},
-    isLoading:false
+    selectedBook:{}
 }
 
 const bookSlice = createSlice({
     name:"book",
     initialState,
     reducers:{
-        requestPending: (state)=>{
-            state.isLoading = true
-            
-        },
-        requestSuccess:(state, {payload})=>{
-            
-            state.isLoading = false
-            state.response = payload
-        },
+       
+       
         getBooksSuccess:(state, {payload})=>{
-            if(state.books.length && !payload.length){
+            if(!state.books.length && !payload.length){
                 return
             }
-            state.isLoading = false
+            
             state.books = payload
+        },
+        setSelectedBook:(state,{payload})=>{
+            state.selectedBook = state.books.find(item=>item.id === payload)
+            
         }
     }
 })
 
 const {reducer, actions} = bookSlice
 
-export const {requestPending, requestSuccess, getBooksSuccess} = actions
+export const {getBooksSuccess, setSelectedBook} = actions
 
 export default reducer

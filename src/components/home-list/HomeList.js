@@ -1,15 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { CustomCard } from '../custom-card/CustomCard'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { getBooksSuccess } from '../../pages/books/bookSlice'
+import { getBooksAction } from '../../pages/books/bookAction'
 
-const HomeList = () => {
-    const {books} = useSelector((state)=>state.book)
-    console.log(books)
+const HomeList = ({display}) => {
+    
   return (
     <div className="d-flex gap-4 flex-wrap">
-        {books?.map((item,i)=> <CustomCard key={i} {...item} />)}
+        {display?.map((item,i)=> <CustomCard key={i} {...item} />)}
          
-       
          </div>
   )
 }

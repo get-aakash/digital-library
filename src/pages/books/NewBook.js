@@ -7,9 +7,14 @@ import { addBookAction } from './bookAction'
 import { Link, useNavigate } from 'react-router-dom'
 
 const initialState = {
-  thumbnail:"",
+  thumbnail: "",
+  title: "",
   summary: "",
-  ratings:""
+  ratings: "",
+  author: "",
+  published: "",
+  available: true,
+  availableFrom: Date()
 }
 const NewBook = () => {
   const [form, setForm] = useState(initialState)
