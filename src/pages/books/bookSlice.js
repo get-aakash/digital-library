@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
     books:[],
-    selectedBook:{}
+    selectedBook:{},
+    borrow:[]
 }
 
 const bookSlice = createSlice({
@@ -22,12 +23,15 @@ const bookSlice = createSlice({
         setSelectedBook:(state,{payload})=>{
             state.selectedBook = state.books.find(item=>item.id === payload)
             
+        },
+        setBorrow:(state, {payload})=>{
+            state.borrow = payload
         }
     }
 })
 
 const {reducer, actions} = bookSlice
 
-export const {getBooksSuccess, setSelectedBook} = actions
+export const {getBooksSuccess, setSelectedBook, setBorrow} = actions
 
 export default reducer

@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, query } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc } from "firebase/firestore"
 import { getBooksSuccess } from "./bookSlice"
 import { db } from "../../firebase-config/firebaseConfig"
 import { toast } from "react-toastify"
@@ -55,5 +55,57 @@ export const deleteBookAction = (id) => async (dispatch) => {
             message: error.message
         }
 
+    }
+}
+
+
+
+export const updateBookAction = ({bookId, ...rest}) => async (dispatch) => {
+    try {
+        
+        
+        const updatePending =  setDoc(doc(db,"books",bookId),rest,{
+            merge: true
+        })
+        toast.promise(updatePending,{
+            pending: "please Wait !!!"
+        })
+
+        await updatePending
+        toast.success("Book has been Borrowed!!!") 
+        dispatch(getBooksAction()) 
+
+
+    } catch (error) {
+        return {
+            status: "error",
+            message: error.message
+        }
+    }
+}
+
+
+export const addBorrowAction = (formData) => async (dispatch) => {
+    console.log("hello")
+    try {
+        
+        const docRef = await addDoc(collection(db, 'borrow'), formData)
+        
+        if (docRef.id) {
+            
+            const obj = {
+                bookId: formData.bookId,
+                available: false,
+                availableFrom: formData.returnedAt
+            }
+            dispatch(updateBookAction(obj))
+            return
+        }
+        toast.error("unable to borrow book")
+    } catch (error) {
+        return {
+            status: "error",
+            message: error.message
+        }
     }
 }

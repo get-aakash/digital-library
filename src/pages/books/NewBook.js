@@ -45,6 +45,19 @@ const NewBook = () => {
       required: true,
     },
     {
+      name: 'author',
+      type: "text",
+      Placeholder: 'Author Name',
+      label: "Author",
+      required: true,
+    },
+    {
+      name: 'published',
+      type: "number",
+      label: "Published Year",
+      required: true,
+    },
+    {
       name: 'ratings',
       type: "number",
       label: "Ratings",

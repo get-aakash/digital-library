@@ -26,7 +26,7 @@ function App() {
   //   dispalayName:user?.displayName,
   // }
     //dispatch(setUser(obj))
-    dispatch(autoLogin(user.uid))
+    dispatch(autoLogin(user?.uid))
   })
   return (
     <div className="App">

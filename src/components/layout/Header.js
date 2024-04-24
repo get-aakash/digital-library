@@ -31,7 +31,7 @@ const Header = () => {
             {user?.role === "admin" && (<Link to='/admin/books' ><i class="fa-solid fa-book"></i></Link> )}
             
             
-            <Link to='#' onClick={handleOnLogout} title='SignOut'><i class="fa-solid fa-person-walking-arrow-right"></i></Link> 
+            <Link to='/' onClick={handleOnLogout} title='SignOut'><i class="fa-solid fa-person-walking-arrow-right"></i></Link> 
             
             </>
             : (
