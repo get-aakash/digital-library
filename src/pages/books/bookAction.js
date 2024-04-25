@@ -1,5 +1,5 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc } from "firebase/firestore"
-import { getBooksSuccess } from "./bookSlice"
+import { getBooksSuccess, setSelectedBook } from "./bookSlice"
 import { db } from "../../firebase-config/firebaseConfig"
 import { toast } from "react-toastify"
 
@@ -73,7 +73,8 @@ export const updateBookAction = ({bookId, ...rest}) => async (dispatch) => {
 
         await updatePending
         toast.success("Book has been Borrowed!!!") 
-        dispatch(getBooksAction()) 
+       await  dispatch(getBooksAction()) 
+       dispatch(setSelectedBook(bookId))
 
 
     } catch (error) {

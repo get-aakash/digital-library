@@ -19,12 +19,12 @@ import { autoLogin } from './pages/signup-signin/userAction';
 
 function App() {
   const dispatch = useDispatch()
-  onAuthStateChanged(auth, (user)=>{
-  // const obj = {
-  //   uid: user?.uid,
-  //   email:user?.email,
-  //   dispalayName:user?.displayName,
-  // }
+  onAuthStateChanged(auth, (user) => {
+    // const obj = {
+    //   uid: user?.uid,
+    //   email:user?.email,
+    //   dispalayName:user?.displayName,
+    // }
     //dispatch(setUser(obj))
     dispatch(autoLogin(user?.uid))
   })
@@ -32,29 +32,40 @@ function App() {
     <div className="App">
       <Routes>
         {/* {public routes} */}
-        <Route path='/' element = {<Home />} />
-        <Route path='signup' element = {<SignUp />} />
-        <Route path='signin' element = {<SignIn/>} />
-        <Route path='book/:bookId' element = {<BookLanding />} />
+        <Route path='/' element={<Home />} />
+        <Route path='signup' element={<SignUp />} />
+        <Route path='signin' element={<SignIn />} />
+        <Route path='book/:bookId' element={<BookLanding />} />
 
         {/* {private routes} */}
 
-        <Route 
-        path='dashboard' 
-        element = {
-        <PrivateRoute>
-          <Dashboard />
-        </PrivateRoute>
-      } 
-      />
-        <Route path='admin/books' element = {
-        <PrivateRoute><BookList /></PrivateRoute>} />
-        <Route path='admin/new' element = {<PrivateRoute><NewBook />
+        <Route
+          path='dashboard'
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='history'
+          element={
+            <PrivateRoute>
+              <BorrowHistory />
+            </PrivateRoute>
+          }
+        />
+        <Route path='admin/books' element={
+          <PrivateRoute>
+            <BookList admin={true} />
           </PrivateRoute>} />
-        <Route path='borrow-history' element = {<BorrowHistory />} />
+        <Route path='admin/new' element={<PrivateRoute>
+          <NewBook admin={true} />
+        </PrivateRoute>} />
+        <Route path='borrow-history' element={<BorrowHistory />} />
       </Routes>
       <ToastContainer />
-     
+
     </div>
   );
 }

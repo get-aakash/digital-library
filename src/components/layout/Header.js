@@ -7,12 +7,16 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from 'react-router-dom';
 import { auth } from '../../firebase-config/firebaseConfig';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from '../../pages/signup-signin/userSlice';
 
 const Header = () => {
   const { user } = useSelector(state => state.user)
+  const dispatch = useDispatch()
   const handleOnLogout = () => {
+    
     signOut(auth).then(() => {
+      dispatch(setUser({}))
       toast.success("Signout successfully")
     }).catch(error => toast.error(error.message))
   }
@@ -26,6 +30,7 @@ const Header = () => {
             {user?.uid &&  <div className="nav-link">Welcome {user.name}</div>}
          
             <Link to="/" title='Home'><i class="fa-solid fa-house"></i></Link>
+            <Link to="/dashboard" title='Dashboard'><i class="fa-solid fa-gauge"></i></Link>
             {user?.uid ? 
             <>
             {user?.role === "admin" && (<Link to='/admin/books' ><i class="fa-solid fa-book"></i></Link> )}

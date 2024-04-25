@@ -44,3 +44,18 @@
  .message{
   max-width: calc(100%-150px);
  }
+ .side-bar{
+  background: rgb(202, 202, 221);
+  height: 100vh;
+  display: fix;
+  line-height: 2rem
+ }
+
+ .side-bar a{
+  text-decoration: none;
+  font-weight: 600;
+ }
+
+ .side-bar ul{
+  list-style: none
+ }
