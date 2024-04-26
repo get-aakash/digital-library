@@ -42,9 +42,9 @@ const BookLanding = () => {
       userId: user.uid,
       userName: user.name,
       borrowedAt: Date.now(),
-      returnedAt
+      returnedAt,
+      returned: false
     }
-    console.log(obj, "hello")
     dispatch(addBorrowAction(obj))
 
   }
@@ -66,6 +66,9 @@ const BookLanding = () => {
 
               <p>{summary}</p>
               <p>
+                {!available && (
+                  <Link to='/signin'>Login to borrow this book</Link>)}
+                
                 {user.uid ? (
                   available ? (
                     <Button variant='primary' onClick={handleOnBorrow}>Borrow</Button>

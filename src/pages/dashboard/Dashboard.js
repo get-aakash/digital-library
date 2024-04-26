@@ -3,6 +3,7 @@ import AdminLayout from '../../components/layout/AdminLayout'
 import { useSelector } from 'react-redux'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import SideBar from '../../components/sidebar/SideBar'
 
 const Dashboard = () => {
   const {user} = useSelector(state=>state.user)
@@ -12,22 +13,7 @@ const Dashboard = () => {
       <Container fluid>
         <Row>
           <Col sm='3' className=' side-bar'>
-            <h3>Welcome</h3>
-            <hr />
-            <ul>
-            <li>
-              <Link to="/admin/books">Books</Link>
-              </li>
-              <li>
-              <Link to="/admin/new">New Book</Link>
-              </li>
-              <li>
-              <Link to="/history">History</Link>
-              </li>
-              <li>
-              <Link to="/profile">Profile</Link>
-              </li>
-            </ul>
+            <SideBar />
           </Col>
           <Col md="9">
             <h5 className="mt-2">Dashboard</h5>
