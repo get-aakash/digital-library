@@ -27,14 +27,14 @@ const Dashboard = () => {
 
                 <Card style={{width: "18rem"}}>
                   <Card.Body>
-                    Account Borrowed: <span className='fw-bold fs-2'>3</span>
+                    Account Borrowed: <span className='fw-bold fs-2'></span>
 {''}                  </Card.Body>
                 </Card>
 
                 
                 <Card style={{width: "18rem"}}>
                   <Card.Body>
-                    Totlal Borrowed: <span className='fw-bold fs-2'>30</span>
+                    Totlal Borrowed: <span className='fw-bold fs-2'></span>
 {''}                  </Card.Body>
                 </Card>
               </div>

@@ -16,6 +16,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from './pages/signup-signin/userSlice';
 import { auth } from './firebase-config/firebaseConfig';
 import { autoLogin } from './pages/signup-signin/userAction';
+import ResetPassword from './pages/signup-signin/ResetPassword';
 
 function App() {
   const dispatch = useDispatch()
@@ -36,6 +37,7 @@ function App() {
         <Route path='signup' element={<SignUp />} />
         <Route path='signin' element={<SignIn />} />
         <Route path='book/:bookId' element={<BookLanding />} />
+        <Route path='/reset-password' element={<ResetPassword />}/>
 
         {/* {private routes} */}
 

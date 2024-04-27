@@ -15,9 +15,17 @@ import { setUser } from './userSlice'
 const SignUp = () => {
   const dispatch = useDispatch()
   const [form, setForm] = useState({})
+  const [error, setError] = useState("")
   const navigate = useNavigate()
   const handleOnChange = (e) => {
     const { name, value } = e.target
+    if(name==="password"){
+      setError("")
+      value.length < 6 && setError("password must be 6 characters long")
+      !/[0-9]/.test(value)&& setError("Number is required")
+      !/[A-Z]/.test(value)&& setError("Upper Case is required")
+      !/[a-z]/.test(value)&& setError("Lower Case is required")
+    }
     setForm({ ...form, [name]: value })
   }
 
@@ -96,7 +104,7 @@ const SignUp = () => {
           <h3 className='text-primary fw-bolder'>Join Our Library</h3>
 
           <Form.Text className='mt-5 py-2'>
-            Create admin or user account
+            Create admin or user account. 
           </Form.Text>
           <div className="mt-5">
             <Form.Group className='mb-3'>
@@ -112,6 +120,15 @@ const SignUp = () => {
             ))}
 
           </div>
+          <Form.Group className='mt-3'>
+            <Form.Text>
+              Your password must be atleast 6 characters including number, upper case and lower case characters.
+              {error && <ul>
+                <li className='text-danger fw-bolder'>{error}</li>
+                </ul>}
+            </Form.Text>
+
+          </Form.Group>
 
           <div className='d-grid mt-3'>
             <Button type='submit'>Join Library</Button>

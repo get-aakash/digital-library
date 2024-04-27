@@ -79,6 +79,7 @@ const SignIn = () => {
             ))}
 
           </div>
+          <div className="text-end mt-3">Forgot Password? <a href='/reset-password'>Reset </a>here..</div>
 
           <div className='d-grid mt-3'>
             <Button type='submit'>Login</Button>
