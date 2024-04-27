@@ -10,6 +10,7 @@ const BorrowHistoryTable = () => {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.user)
   const { borrow } = useSelector((state) => state.borrow)
+  const {reviews} = useSelector((state)=>state.book)
 
   const [selectedId, setSelectedId] = useState({})
   useEffect(() => {
@@ -25,6 +26,8 @@ const BorrowHistoryTable = () => {
     setSelectedId(obj)
     dispatch(setModal(true))
   }
+
+  const listOfReviewedBooksBorrowedId = reviews.map((item)=>item.borrowId)
   return (
     <>
       <PopUp title="Leave your Reviews">
@@ -47,7 +50,7 @@ const BorrowHistoryTable = () => {
               <td>{new Date(borrowedAt).toLocaleDateString()}</td>
               <td>{new Date(returnedAt).toLocaleDateString()}</td>
               <td>
-                {returned ? <Button onClick={() => handleOnReview({bookId,borrowId:id})}>Review Now</Button> : <Button onClick={() => handleOnReturn({ bookId, id })}>Return</Button>}
+                {returned ? <Button onClick={() => handleOnReview({bookId,borrowId:id})} disabled={listOfReviewedBooksBorrowedId.includes(id)}>Review Now</Button> : <Button onClick={() => handleOnReturn({ bookId, id })}>Return</Button>}
 
               </td>
             </tr>

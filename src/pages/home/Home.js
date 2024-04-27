@@ -5,7 +5,7 @@ import { CustomCard } from '../../components/custom-card/CustomCard'
 import { Container, Form } from 'react-bootstrap'
 import HomeList from '../../components/home-list/HomeList'
 import { useDispatch, useSelector } from 'react-redux'
-import { getBooksAction } from '../books/bookAction'
+import { getBooksAction, getReviewAction } from '../books/bookAction'
 
 const Home = () => {
   const [display, setDisplay] = useState([])
@@ -15,6 +15,7 @@ const Home = () => {
      
         setDisplay(books)
         !books.length && dispatch(getBooksAction())
+        dispatch(getReviewAction())
         
         
     },[ dispatch, books])

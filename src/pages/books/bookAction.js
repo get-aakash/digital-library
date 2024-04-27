@@ -1,5 +1,5 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc } from "firebase/firestore"
-import { getBooksSuccess, setSelectedBook } from "./bookSlice"
+import { getBooksSuccess, setReviews, setSelectedBook } from "./bookSlice"
 import { db } from "../../firebase-config/firebaseConfig"
 import { toast } from "react-toastify"
 
@@ -122,10 +122,34 @@ export const addReviewsAction = (data)=>async(dispatch)=>{
 
         if(response?.id){
             toast.success("Your reviews is added")
+            dispatch(getReviewAction())
             return
         }
         toast.error("unable to add reviews, Please try again")
     } catch (error) {
         toast.error(error.message)
+    }
+}
+
+export const getReviewAction = () => async (dispatch) => {
+    try {
+
+        let reviews = []
+        const q = query(collection(db, "reviews"))
+        const querySnapshot = await getDocs(q)
+        querySnapshot.forEach((doc) => {
+            const { id } = doc
+            const data = { ...doc.data(), id }
+            reviews.push(data)
+        })
+
+        dispatch(setReviews(reviews))
+
+
+    } catch (error) {
+        return {
+            status: "error",
+            message: error.message
+        }
     }
 }
