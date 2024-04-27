@@ -4,9 +4,11 @@ import { db } from "../../firebase-config/firebaseConfig"
 import { toast } from "react-toastify"
 
 
+
+
 export const getBooksAction = () => async (dispatch) => {
     try {
-        
+
         let bks = []
         const q = query(collection(db, "books"))
         const querySnapshot = await getDocs(q)
@@ -28,7 +30,7 @@ export const getBooksAction = () => async (dispatch) => {
 }
 export const addBookAction = (formData) => async (dispatch) => {
     try {
-        
+
         const docRef = await addDoc(collection(db, 'books'), formData)
         if (docRef.id) {
             dispatch(getBooksAction()) && toast.success("Book added successfully!!!!")
@@ -45,9 +47,9 @@ export const addBookAction = (formData) => async (dispatch) => {
 
 export const deleteBookAction = (id) => async (dispatch) => {
     try {
-        
+
         await deleteDoc(doc(db, 'books', id))
-       dispatch(getBooksAction()) && toast.success("Book deleted succssfully")
+        dispatch(getBooksAction()) && toast.success("Book deleted succssfully")
 
     } catch (error) {
         return {
@@ -60,21 +62,21 @@ export const deleteBookAction = (id) => async (dispatch) => {
 
 
 
-export const updateBookAction = ({bookId, ...rest}) => async (dispatch) => {
+export const updateBookAction = ({ bookId, ...rest }) => async (dispatch) => {
     try {
-        
-        
-        const updatePending =  setDoc(doc(db,"books",bookId),rest,{
+
+
+        const updatePending = setDoc(doc(db, "books", bookId), rest, {
             merge: true
         })
-        toast.promise(updatePending,{
+        toast.promise(updatePending, {
             pending: "please Wait !!!"
         })
 
         await updatePending
-        toast.success("Book has been Borrowed!!!") 
-       await  dispatch(getBooksAction()) 
-       dispatch(setSelectedBook(bookId))
+        toast.success("Book has been Borrowed!!!")
+        await dispatch(getBooksAction())
+        dispatch(setSelectedBook(bookId))
 
 
     } catch (error) {
@@ -87,13 +89,13 @@ export const updateBookAction = ({bookId, ...rest}) => async (dispatch) => {
 
 
 export const addBorrowAction = (formData) => async (dispatch) => {
-    console.log("hello")
+
     try {
-        
+
         const docRef = await addDoc(collection(db, 'borrow'), formData)
-        
+
         if (docRef.id) {
-            
+
             const obj = {
                 bookId: formData.bookId,
                 available: false,
@@ -108,5 +110,22 @@ export const addBorrowAction = (formData) => async (dispatch) => {
             status: "error",
             message: error.message
         }
+    }
+}
+
+
+
+export const addReviewsAction = (data)=>async(dispatch)=>{
+    console.log(data)
+    try {
+        const response = await addDoc(collection(db,"reviews"),data)
+
+        if(response?.id){
+            toast.success("Your reviews is added")
+            return
+        }
+        toast.error("unable to add reviews, Please try again")
+    } catch (error) {
+        toast.error(error.message)
     }
 }

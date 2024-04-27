@@ -40,6 +40,7 @@ export const returnBookAction = (obj)=>async(dispatch)=>{
             availableFrom: Date.now()
         }
         await updateDoc(doc(db, "books",obj.bookId), bookUpdate)
+        toast.success("You have returned the book successfully")
         
 
     } catch (error) {
