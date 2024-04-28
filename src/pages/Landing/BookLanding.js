@@ -3,7 +3,7 @@ import DefaultLayout from '../../components/layout/DefaultLayout'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { addBorrowAction, getBooksAction } from '../books/bookAction'
+import { addBorrowAction, getBooksAction, diplayReviewAction } from '../books/bookAction'
 import Ratings from '../../components/ratings/Ratings'
 import { doc, setDoc } from 'firebase/firestore'
 import { db } from '../../firebase-config/firebaseConfig'
@@ -16,16 +16,14 @@ const BookLanding = () => {
   const { books } = useSelector(state => state.book)
 
   const { selectedBook } = useSelector((state) => state.book)
-  console.log(selectedBook)
   const navigate = useNavigate()
   const { user } = useSelector((state) => state.user)
-  //   useEffect(()=>{
-  //     !books.length && dispatch(getBooksAction())
-  // if(books.length)
-  //   },[books,dispatch])
+  const { reviews } = useSelector((state) => state.book)
+
 
   useEffect(() => {
     !selectedBook.id && navigate("/")
+
 
   }, [selectedBook, navigate])
 
@@ -33,9 +31,9 @@ const BookLanding = () => {
   const { title, thumbnail, summary, ratings = 0, author, published, available, availableFrom } = selectedBook
 
   const handleOnBorrow = async (e) => {
-    
+
     const today = new Date()
-    const returnedAt = today.setDate(today.getDate()+ defaultBorrowingDays)
+    const returnedAt = today.setDate(today.getDate() + defaultBorrowingDays)
     const obj = {
       bookTitle: title,
       bookId: selectedBook.id,
@@ -68,7 +66,7 @@ const BookLanding = () => {
               <p>
                 {!available && (
                   <Link to='/signin'>Login to borrow this book</Link>)}
-                
+
                 {user.uid ? (
                   available ? (
                     <Button variant='primary' onClick={handleOnBorrow}>Borrow</Button>
@@ -79,54 +77,26 @@ const BookLanding = () => {
             </Col>
           </Row>
           <h3>Reviews</h3>
-          <Row className='mt-3 border rounded p-3 mb-2'>
-            <Col sm='3'>
-              <div className="avatar">AA</div>
-            </Col>
-            <Col sm='9'>
-              <div className="message">
-                <Ratings ratings={5} />
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus fugit tempore eveniet accusamus deserunt ipsa sunt cupiditate qui voluptates sint.</p>
-              </div>
-            </Col>
+          {reviews.map((item, i) => {
+            return (
+              <Row className='mt-3 border rounded p-3 mb-2'>
+                <Col sm='3'>
+                  <div className="avatar">{item.userName}</div>
+                </Col>
+                <Col sm='9'>
+                  <div className="message">
+                    <Ratings ratings={item.ratings} />
+                    <p>{item.review}</p>
+                  </div>
+                </Col>
 
-          </Row>
-          <Row className='mt-3 border rounded p-3 mb-2'>
-            <Col sm='3'>
-              <div className="avatar">AA</div>
-            </Col>
-            <Col sm='9'>
-              <div className="message">
-                <Ratings ratings={5} />
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus fugit tempore eveniet accusamus deserunt ipsa sunt cupiditate qui voluptates sint.</p>
-              </div>
-            </Col>
+              </Row>
+            )
+          })}
 
-          </Row>
-          <Row className='mt-3 border rounded p-3 mb-2'>
-            <Col sm='3'>
-              <div className="avatar">AA</div>
-            </Col>
-            <Col sm='9'>
-              <div className="message">
-                <Ratings ratings={5} />
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus fugit tempore eveniet accusamus deserunt ipsa sunt cupiditate qui voluptates sint.</p>
-              </div>
-            </Col>
 
-          </Row>
-          <Row className='mt-3 border rounded p-3 mb-2'>
-            <Col sm='3'>
-              <div className="avatar">AA</div>
-            </Col>
-            <Col sm='9'>
-              <div className="message">
-                <Ratings ratings={5} />
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus fugit tempore eveniet accusamus deserunt ipsa sunt cupiditate qui voluptates sint.</p>
-              </div>
-            </Col>
 
-          </Row>
+
         </div>
       </Container>
     </DefaultLayout>

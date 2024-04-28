@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, where } from "firebase/firestore"
 import { getBooksSuccess, setReviews, setSelectedBook } from "./bookSlice"
 import { db } from "../../firebase-config/firebaseConfig"
 import { toast } from "react-toastify"
@@ -145,11 +145,29 @@ export const getReviewAction = () => async (dispatch) => {
 
         dispatch(setReviews(reviews))
 
-
     } catch (error) {
         return {
             status: "error",
             message: error.message
         }
+    }
+}
+
+export const diplayReviewAction = (bookId)=>async(dispatch)=>{
+    console.log("hello")
+    try {
+        const q = query(collection(db, "reviews"), where ("bookId", "==", bookId))
+        const querySnapshot = await getDocs(q)
+        querySnapshot.forEach((doc)=>{
+            const data = (doc.id,doc.data())
+            console.log(data)
+        })
+        
+    } catch (error) {
+        return {
+            status: "error",
+            message: error.message
+        }
+        
     }
 }

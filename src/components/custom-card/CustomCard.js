@@ -5,13 +5,13 @@ import Ratings from '../ratings/Ratings';
 import { useDispatch } from 'react-redux';
 import { setSelectedBook } from '../../pages/books/bookSlice';
 import { useNavigate } from 'react-router-dom';
+import { diplayReviewAction } from '../../pages/books/bookAction';
 
 export const CustomCard = ({id, title, thumbnail, summary, ratings})=> {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const handleOnClick = ()=>{
     dispatch(setSelectedBook(id))
-
     navigate("/book/" + title)
   }
   return (
