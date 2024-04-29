@@ -7,6 +7,7 @@ import { addBorrowAction, getBooksAction, diplayReviewAction } from '../books/bo
 import Ratings from '../../components/ratings/Ratings'
 import { doc, setDoc } from 'firebase/firestore'
 import { db } from '../../firebase-config/firebaseConfig'
+import ProfileImage from '../../components/profileImage/ProfileImage'
 
 
 const defaultBorrowingDays = 14
@@ -20,6 +21,8 @@ const BookLanding = () => {
   const { user } = useSelector((state) => state.user)
   const { reviews } = useSelector((state) => state.book)
 
+
+  
 
   useEffect(() => {
     !selectedBook.id && navigate("/")
@@ -46,6 +49,7 @@ const BookLanding = () => {
     dispatch(addBorrowAction(obj))
 
   }
+  
   const date = new Date(availableFrom).toLocaleDateString()
   return (
     <DefaultLayout>
@@ -81,7 +85,7 @@ const BookLanding = () => {
             return (
               <Row className='mt-3 border rounded p-3 mb-2'>
                 <Col sm='3'>
-                  <div className="avatar">{item.userName}</div>
+                  <ProfileImage name={item.userName} />
                 </Col>
                 <Col sm='9'>
                   <div className="message">
